@@ -90,7 +90,7 @@ export function useCarrinhoContext() {
       if (product.id === item.id) {
         return {
           ...product,
-          quantidade_disponivel: product.quantidade_disponivel -= 2
+          quantidade_disponivel: product.quantidade_disponivel - 1
         }
       }
       return product;
@@ -102,6 +102,7 @@ export function useCarrinhoContext() {
   
  
  
+  
   return {
     carrinho,
     setCarrinho,

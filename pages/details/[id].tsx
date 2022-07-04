@@ -1,7 +1,7 @@
 import BotaoPesquisar from 'components/BotaoPesquisar';
 import BotaoSacola from 'components/BotaoSacola';
 import Layout from 'components/layout';
-import { ListaDeProdutos } from 'components/ListaProdutos';
+import { ListaDeProdutos, Props } from 'components/ListaProdutos';
 import Painel, { Descricao } from 'components/painel';
 import TamanhosDisponivel from 'components/TamanhosDisponivel';
 import ProdutosProvider, { ProdutosContext } from 'contexts/produtosContext';
@@ -10,7 +10,7 @@ import router, { useRouter } from 'next/router';
 
 
 
-import { ReactElement, useContext } from 'react';
+import { ReactElement, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Titulo } from '../../styles';
 import { SecaoImagem } from '../../styles';
@@ -55,49 +55,51 @@ const SecaoContainer = styled.section`
 
 
 const DetalhesProdutos : NextPageWithLayout = () => {
+
+  
+
   const router = useRouter();
   const {produt,setProdutos} = useContext(ProdutosContext);
   const secaoProdutos1 = produt.filter(produto => produto.secaoProdutos === 1) ;
   const id = router.query.id;
-  const detalhes = produt.find(item=> item.id === Number(id));
+  const detalhes =produt && produt.find(item=> item.id === Number(id));
 
-  if(!detalhes){
-    return <NotFound />;
-  }
- 
+
   return(
    
   <>
 
-    
      <BotaoPesquisar/>
-     <PaginaDetalhe>
-      <SecaoImagem src={detalhes.imagens[0].url} width="100"/>
-     <SecaoInformacoes>
     
-      <Titulo>{detalhes.nome}, R$ {detalhes.preco}</Titulo>
-        <Descricao>{detalhes.descricao}</Descricao>
-        <SecaoModelos>
-          <SecaoImagem src={detalhes.imagens[0].url}/>
-          <SecaoImagem src={detalhes.imagens[0].url}/>
-          <SecaoImagem src={detalhes.imagens[0].url}/>
-          <SecaoImagem src={detalhes.imagens[0].url}/>
-          
-      </SecaoModelos>
-      <SecaoContainer>
-        <TamanhosDisponivel tamanhos={detalhes.tamanhos_disponiveis}></TamanhosDisponivel>
-        <BotaoSacola   onClick={()=>(detalhes)} >POR NA SACOLA</BotaoSacola>
-      </SecaoContainer>
-        
-        
-     </SecaoInformacoes>
+  <PaginaDetalhe>
+   
      
-     
-     
-      
+    
+      <SecaoImagem src={detalhes?.imagens[0].url} width="100"/>
+      <SecaoInformacoes>
 
+    <Titulo>{detalhes?.nome}, R$ {detalhes?.preco}</Titulo>
+      <Descricao>{detalhes?.descricao}</Descricao>
+      <SecaoModelos>
+        <SecaoImagem src={detalhes?.imagens[0].url}/>
+        <SecaoImagem src={detalhes?.imagens[0].url}/>
+        <SecaoImagem src={detalhes?.imagens[0].url}/>
+        <SecaoImagem src={detalhes?.imagens[0].url}/>
+        
+    </SecaoModelos>
+    <SecaoContainer>
       
-     </PaginaDetalhe>
+      <BotaoSacola   onClick={()=>(detalhes)} >POR NA SACOLA</BotaoSacola>
+    </SecaoContainer>
+      
+      
+    </SecaoInformacoes>
+
+    
+   
+  
+   </PaginaDetalhe>
+  
 
       <Painel/>
       <ListaDeProdutos titulo='Últimos lançamentos'  Produtos={secaoProdutos1}/>

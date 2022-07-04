@@ -10,7 +10,8 @@ import { CarrinhoProvider } from 'contexts/carrinhoContext';
 
 
 export type NextPageWithLayout = NextPage & {
- getLayout?: (page: ReactElement) => ReactNode
+ getLayout?: (page: ReactElement) => ReactNode,
+ 
 }
 
 type AppPropsWithLayout = AppProps & {

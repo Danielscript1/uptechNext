@@ -1,4 +1,4 @@
-import React,{ createContext, ReactNode, useContext, useState } from 'react';
+import React,{ createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { Produtos } from 'common/utils/data';
 import IListaProdutos from 'Interfaces/IListaProdutos';
 
@@ -12,15 +12,20 @@ interface ProdutosProviderProps{
 
 interface ProdutosContextProps{
   produt : IListaProdutos[],
-  setProdutos:(produt:IListaProdutos[])=>void
+  setProdutos?:(produt:IListaProdutos[])=>void
 }
 
 
-export const ProdutosContext = createContext<ProdutosContextProps>({produt:[],setProdutos: (produt: IListaProdutos[])=>[]});
+export const ProdutosContext = createContext<ProdutosContextProps>({produt:[]});
 ProdutosContext.displayName= "listaProdutos";
 export default function ProdutosProvider({ children }:ProdutosProviderProps){
   const [produt, setProdutos] = useState< IListaProdutos[]>(Produtos);
 
+  useEffect(()=>{
+    fetch('/api/details')
+    .then(response =>response.json())
+    .then(data=>setProdutos(data))
+    },[])
   
 return(
   <ProdutosContext.Provider value={{produt,setProdutos}}>
