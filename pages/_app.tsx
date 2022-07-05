@@ -4,11 +4,14 @@ import { ReactElement, ReactNode } from 'react';
 import { createGlobalStyle, DefaultTheme, ThemeProvider } from 'styled-components';
 import {GlobalStyle} from '../styles/GlobalStyle';
 import theme from '../styles/theme';
+import ProdutosProvider from 'contexts/produtosContext';
+import { CarrinhoProvider } from 'contexts/carrinhoContext';
 
 
 
 export type NextPageWithLayout = NextPage & {
- getLayout?: (page: ReactElement) => ReactNode
+ getLayout?: (page: ReactElement) => ReactNode,
+ 
 }
 
 type AppPropsWithLayout = AppProps & {
@@ -21,7 +24,14 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
   <>
   <GlobalStyle />
   <ThemeProvider theme={theme}>
-  <Component {...pageProps} />
+    <ProdutosProvider>
+      <CarrinhoProvider>
+      <Component {...pageProps} />
+      </CarrinhoProvider>
+    </ProdutosProvider>
+   
+        
+      
   </ThemeProvider>
  </>
  )

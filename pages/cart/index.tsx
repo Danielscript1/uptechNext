@@ -1,15 +1,40 @@
-import NextLink from 'next/link';
-function Cart(){
-  return (
+import BotaoPesquisar from 'components/BotaoPesquisar';
+import Layout from 'components/layout';
+import Sacola from 'components/Sacola';
+import { ReactElement } from 'react';
+import { NextPageWithLayout } from '../_app';
+
+
+
+const Carrinho: NextPageWithLayout = () => {
+
+ 
+
+  return(
     <>
-      <div>Cart</div>
-      <NextLink href="/">
-       carrinho 
-      </NextLink>
+
+    <BotaoPesquisar/>
+      <Sacola/>   
     
     </>
-    
   )
+
 }
 
-export default Cart;
+Carrinho.getLayout = function getLayout(page: ReactElement) {
+
+  return (
+
+    <Layout>
+
+      {page}
+
+    </Layout>
+
+  )
+
+}
+
+
+
+export default Carrinho;
