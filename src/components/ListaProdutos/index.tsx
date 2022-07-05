@@ -38,17 +38,12 @@ interface listaProdutos{
 
 export  function ListaDeProdutos({titulo,Produtos}:listaProdutos){
   
- // const navigate = useNavigate();
+ 
 
     const {carrinho,setCarrinho,adicionarProduto} = useCarrinhoContext();
-   
-   
+     
   
-
-  function redirecionarParaDetalhes(produtos:Props){
-   
-  // navigate(`/detalhes/${produtos.id}`, {state:{produtos},replace:true});
-  } 
+ 
 
  return(
 

@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import   { useProdutoContext }  from './produtosContext';
 
 interface ProdutosProviderProps{
@@ -33,6 +33,9 @@ CarrinhoContext.displayName = "Carrinho"
 
 export const  CarrinhoProvider = ({ children }:ProdutosProviderProps) => {
   const [carrinho, setCarrinho] =  useState<Props[]>([]);
+
+
+
   return (
     <CarrinhoContext.Provider
       value={{carrinho,setCarrinho}}>
@@ -52,24 +55,46 @@ export function useCarrinhoContext() {
     return item;
   });
   
-  function adicionarProduto(novoProduto: Props) {
-   
-    const temOProduto = carrinho.some(item => item.id === novoProduto.id);
+  async function adicionarProduto(novoProduto: Props) {
+    const temOProduto = carrinho.some((item)  => item.id === novoProduto.id);
+ 
     let novoCarrinho = [...carrinho];
     if (!temOProduto) {
+     
       novoProduto.quantidade_disponivel =  novoProduto.quantidade_disponivel = 1;
+
+      const response = await fetch('/api/productCart', {
+        method: 'POST',
+        body: JSON.stringify({
+          id: novoProduto.id,
+          nome: novoProduto.nome,
+          url: novoProduto.url,
+          preco: novoProduto.preco,
+          descricao: novoProduto.descricao,
+          tamanhos_disponiveis: novoProduto.tamanhos_disponiveis,
+          quantidade_disponivel: novoProduto.quantidade_disponivel,
+          secaoProdutos: novoProduto.secaoProdutos,
+          imagens: novoProduto.imagens
+        }),
+        headers: {
+        'Content-Type': 'application/json'
+      }})
+
+      const newProductCart = await response.json()
+
       novoCarrinho.push(novoProduto);
       return setCarrinho(novoCarrinho);
 
-     
-    }
-   
+    
+    } 
+  
     novoCarrinho = mudarQuantidade(novoProduto.id, 1);
     setCarrinho(novoCarrinho);
-    
+        
     
    
-  };
+   
+      }
 
   function removerProduto(id:number) {
     const produto = carrinho.find(item => item.id === id);
@@ -83,24 +108,7 @@ export function useCarrinhoContext() {
     setCarrinho(novoCarrinho);
   }
 
-  const { produt, setProdutos } = useProdutoContext();
 
-  function diminuiEstoque(item: { id: number; } ) {
-    const updatedProducts = produt.map((product) => {
-      if (product.id === item.id) {
-        return {
-          ...product,
-          quantidade_disponivel: product.quantidade_disponivel - 1
-        }
-      }
-      return product;
-    })
-
-    setProdutos(updatedProducts);
-  }
-  
-  
- 
  
   
   return {
@@ -109,7 +117,7 @@ export function useCarrinhoContext() {
     adicionarProduto,
     mudarQuantidade,
     removerProduto,
-    diminuiEstoque
+    
    
   }
 }

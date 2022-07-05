@@ -8,6 +8,8 @@ import { NextPageWithLayout } from '../_app';
 
 const Carrinho: NextPageWithLayout = () => {
 
+ 
+
   return(
     <>
 

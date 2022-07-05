@@ -19,10 +19,10 @@ interface ProdutosContextProps{
 export const ProdutosContext = createContext<ProdutosContextProps>({produt:[]});
 ProdutosContext.displayName= "listaProdutos";
 export default function ProdutosProvider({ children }:ProdutosProviderProps){
-  const [produt, setProdutos] = useState< IListaProdutos[]>(Produtos);
+  const [produt, setProdutos] = useState< IListaProdutos[]>([]);
 
   useEffect(()=>{
-    fetch('/api/details')
+    fetch(`/api/details`)
     .then(response =>response.json())
     .then(data=>setProdutos(data))
     },[])
