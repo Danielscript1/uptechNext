@@ -6,8 +6,8 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint",
-        "backend": "json-server db.json -p 3001"
+        "lint": "next lint"
+
     },
     "dependencies": {
         "json-server": "^0.17.0",
